@@ -98,3 +98,6 @@ Makefile参考  [openwrt-shadowsocks][E]
   [E]: https://github.com/shadowsocks/openwrt-shadowsocks
   [D]: https://github.com/aa65535/openwrt-dns-forwarder
   
+
+  
+  修改DNS-Forwarder为Pdnsd

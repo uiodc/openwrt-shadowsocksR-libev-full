@@ -54,21 +54,21 @@ define Package/shadowsocksr-libev-gfwlist
   $(call Package/shadowsocksr-libev/Default)
   TITLE+= (OpenSSL)
   VARIANT:=openssl
-  DEPENDS:=+libopenssl +libpthread +libpcre +zlib +dnsmasq-full +ipset +dns-forwarder
+  DEPENDS:=+libopenssl +libpthread +libpcre +zlib +dnsmasq-full +ipset +pdnsd
 endef
 
 define Package/shadowsocksr-libev-gfwlist-polarssl
   $(call Package/shadowsocksr-libev/Default)
   TITLE+= (PolarSSL)
   VARIANT:=polarssl
-  DEPENDS:=+libpolarssl +libpthread +libpcre +dnsmasq-full +ipset +dns-forwarder
+  DEPENDS:=+libpolarssl +libpthread +libpcre +dnsmasq-full +ipset +pdnsd
 endef
 
 define Package/shadowsocksr-libev-gfwlist-mbedtls
   $(call Package/shadowsocksr-libev/Default)
   TITLE+= (mbedTLS)
   VARIANT:=mbedtls
-  DEPENDS:=+libmbedtls +libpthread +libpcre +dnsmasq-full +ipset +dns-forwarder
+  DEPENDS:=+libmbedtls +libpthread +libpcre +dnsmasq-full +ipset +pdnsd
 endef
 
 define Package/shadowsocksr-libev/description
@@ -98,7 +98,7 @@ define Package/shadowsocksr-libev-gfwlist/postinst
 if [ -z "$${IPKG_INSTROOT}" ]; then
 	/etc/init.d/firewall restart
 	/etc/init.d/shadowsocksr restart
-	/etc/init.d/dns-forwarder restart
+	/etc/init.d/pdnsd restart
 	/etc/init.d/dnsmasq restart
 fi
 exit 0
@@ -149,9 +149,9 @@ define Package/shadowsocksr-libev-gfwlist/install
 	#patch firewall rule, create ipset gfwlist & redirect traffic
 	$(INSTALL_CONF) ./files/firewall.user $(1)/etc/firewall.user
 	
-	#patch dns-forwarder
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/dns-forwarder.config $(1)/etc/config/dns-forwarder
+	#patch pdnsd
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_CONF) ./files/pdnsd.conf $(1)/etc/pdnsd.conf
 	
 	#install luci for ssr
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller

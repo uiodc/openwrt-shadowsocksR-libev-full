@@ -13,7 +13,7 @@ while true; do
 
 	LOGTIME=$(date "+%Y-%m-%d %H:%M:%S")
 
-	wget -s -q -T 3 http://www.google.com.hk
+	wget -s -q -T 3 http://www.google.com
 	if [ "$?" == "0" ]; then
 		echo "[$LOGTIME] No problem."
 	else
@@ -21,7 +21,8 @@ while true; do
 		if [ "$?" == "0" ]; then
 			echo "[$LOGTIME] Problem decteted, restart ShadowsocksR."
 			/etc/init.d/dns-forwarder restart
-			/etc/init.d/shadowsocksr restart
+			/etc/init.d/pdnsd restart
+			/usr/bin/pdnsd-ctl empty-cache
 		else
 			echo "[$LOGTIME] Network problem. Do nothing."
 		fi
